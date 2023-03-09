@@ -6,24 +6,38 @@ namespace PlatformService.Data
 
   public class PlatformRepository : IPlatformRepository
   {
+    private readonly AppDbContext _context;
+
+    public PlatformRepository(AppDbContext context)
+    {
+      _context = context;
+    }
+
+    public AppDbContext Context { get; }
+
     public void CreatePlatForm(Platform plat)
     {
-      throw new NotImplementedException();
+      if(plat == null)
+      {
+        throw new ArgumentNullException(nameof(plat));
+      }
+
+      _context.platforms.Add(plat);
     }
 
     public IEnumerable<Platform> GetAllPlatforms()
     {
-      throw new NotImplementedException();
+      return _context.platforms.ToList();
     }
 
     public Platform GetPlatformById(int id)
     {
-      throw new NotImplementedException();
+      return _context.platforms.FirstOrDefault(p => p.Id == id);
     }
 
     public bool SaveChanges()
     {
-      throw new NotImplementedException();
+      return (_context.SaveChanges() >= 0);
     }
   }
 }
